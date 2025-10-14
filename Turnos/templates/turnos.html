@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de turnos</title>
+</head>
+<body>
+ <h2>Turnos:</h2>
+         <div>
+           <a href="/turno/nuevo" class="btn btn-primary">Nuevo Turno</a>
+           <a href="/" class="btn btn-success">Salir</a>
+         </div>
+
+        <diV>
+             {% for t in object_list %}
+           <div class="conteiner">
+              <div class="card">
+                       <div class="card-body">
+                         <h5>{{t.paciente}}</h5>
+                          <p>Fecha: {{t.fecha}}</p>
+                          <P>Obra Social: {{t.obrasocial}}</P>
+                          <p>{{t.especialidad}}</p>
+                       </div>
+
+                      <div>
+                       <a href="{% url 'editar_turno' t.id %}" width="100" class="btn btn-primary"> Editar</a>
+                       <form method="post" action="{% url 'eliminar_turno' t.id %}">
+                              {% csrf_token %}
+                          <button type="submit" class="btn btn-primary" width ="100"onclick="return confirm('¿Eliminar el turno de {{ t.paciente }}?')">Eliminar</button>
+                       </form>
+                      
+                      </div>
+
+                </div>
+            </div>
+
+
+
+            {% endfor %}
+        </div>
+    
+    
+</body>
+</html>
+
+{% endblock %}

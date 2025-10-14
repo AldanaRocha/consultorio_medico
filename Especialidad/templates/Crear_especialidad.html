@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Especialidad</title>
+</head>
+<body>
+    <h3>Crear nueva especialidad:</h3>
+   <div>
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form.as_p}}
+        <input class="btn btn-primary" value= "Guardar" type="submit">
+        <a href="/esp/" class="btn btn-primary"> Salir</a>
+    </form>
+   </div>
+
+</body>
+</html>
+
+{% endblock%}

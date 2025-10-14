@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Especialidades</title>
+</head>
+<body>
+    <h2>Lista de Especialidades</h2>
+    <diV>
+        <a class="btn btn-primary" href="{% url 'nueva_especialidad' %}"> Nueva </a>
+        <a href="/" class="btn btn-primary"> Salir</a>
+
+    </diV>
+     {% for especialidad in object_list %}
+     <div class="conteiner">
+        <div class="card">
+            <div class="card-body">
+                <h3>{{especialidad.tipo}}</h3>
+                <p>{{especialidad.doctor}}</p>
+            </div>
+        </div>
+     </div>
+     <a href="{% url 'editar_especialidad' especialidad.id %}" class="btn btn-primary"> Editar </a>
+
+     
+     <form method="post" action="{% url 'eliminar_especialidad' especialidad.id %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('¿Eliminar {{ especialidad.tipo }}?')">Eliminar</button>
+     </form>
+
+     {% endfor %}
+
+     
+
+</body>
+{% endblock %}
+</html>
