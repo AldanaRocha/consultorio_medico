@@ -1,41 +1,243 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Especialidades</title>
-</head>
-<body>
-    <h2>Lista de Especialidades</h2>
-    <diV>
-        <a class="btn btn-primary" href="{% url 'nueva_especialidad' %}"> Nueva </a>
-        <a href="/" class="btn btn-primary"> Salir</a>
+<style>
+    .especialidades-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .especialidades-header h2 {
+        margin: 0 0 1rem 0;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+    
+    .header-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .btn-nueva {
+        background-color: #10b981;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-nueva:hover {
+        background-color: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        color: white;
+    }
+    
+    .btn-salir {
+        background-color: #6b7280;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-salir:hover {
+        background-color: #4b5563;
+        color: white;
+    }
+    
+    .especialidades-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .especialidad-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .especialidad-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        padding: 1.25rem;
+        border-bottom: 2px solid #667eea;
+    }
+    
+    .card-header h3 {
+        margin: 0;
+        color: #1f2937;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .doctor-info {
+        color: #6b7280;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .doctor-info::before {
+        content: "👨‍⚕️";
+        font-size: 1.2rem;
+    }
+    
+    .card-actions {
+        display: flex;
+        gap: 0.75rem;
+        padding: 0 1.25rem 1.25rem;
+    }
+    
+    .btn-editar {
+        flex: 1;
+        background-color: #3b82f6;
+        border: none;
+        padding: 0.6rem 1rem;
+        border-radius: 6px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        text-align: center;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+    
+    .btn-editar:hover {
+        background-color: #2563eb;
+        color: white;
+        transform: scale(1.05);
+    }
+    
+    .btn-eliminar {
+        flex: 1;
+        background-color: #ef4444;
+        border: none;
+        padding: 0.6rem 1rem;
+        border-radius: 6px;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-eliminar:hover {
+        background-color: #dc2626;
+        transform: scale(1.05);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #6b7280;
+    }
+    
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .especialidades-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .header-buttons {
+            flex-direction: column;
+        }
+        
+        .btn-nueva, .btn-salir {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
 
-    </diV>
-     {% for especialidad in object_list %}
-     <div class="conteiner">
-        <div class="card">
-            <div class="card-body">
-                <h3>{{especialidad.tipo}}</h3>
-                <p>{{especialidad.doctor}}</p>
+<div class="especialidades-header">
+    <h2>Especialidades Médicas</h2>
+    <div class="header-buttons">
+        <!-- Botón Nueva Especialidad - Solo para admin -->
+        {% if user.is_superuser or user.is_staff %}
+        <a class="btn-nueva" href="{% url 'nueva_especialidad' %}">
+            <span>➕</span> Nueva Especialidad
+        </a>
+        {% endif %}
+        
+        <a href="/" class="btn-salir">
+            ← Salir
+        </a>
+    </div>
+</div>
+
+{% if object_list %}
+    <div class="especialidades-grid">
+        {% for especialidad in object_list %}
+        <div class="especialidad-card">
+            <div class="card-header">
+                <h3>{{ especialidad.tipo }}</h3>
             </div>
+            <div class="card-body">
+                <div class="doctor-info">
+                    <strong>{{ especialidad.doctor }}</strong> 
+                </div>
+            </div>
+            
+            <!-- Botones Editar/Eliminar - Solo para admin -->
+            {% if user.is_superuser or user.is_staff %}
+            <div class="card-actions">
+                <a href="{% url 'editar_especialidad' especialidad.id %}" class="btn-editar">
+                    ✏️ Editar
+                </a>
+                <form method="post" action="{% url 'eliminar_especialidad' especialidad.id %}" style="flex: 1; margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-eliminar" onclick="return confirm('¿Está seguro de eliminar la especialidad {{ especialidad.tipo }}?')">
+                        🗑️ Eliminar
+                    </button>
+                </form>
+            </div>
+            {% endif %}
         </div>
-     </div>
-     <a href="{% url 'editar_especialidad' especialidad.id %}" class="btn btn-primary"> Editar </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">🏥</div>
+        <h3>No hay especialidades registradas</h3>
+        {% if user.is_superuser or user.is_staff %}
+        <p>Comienza agregando una nueva especialidad médica</p>
+        {% else %}
+        <p>Próximamente habrá especialidades disponibles</p>
+        {% endif %}
+    </div>
+{% endif %}
 
-     
-     <form method="post" action="{% url 'eliminar_especialidad' especialidad.id %}" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('¿Eliminar {{ especialidad.tipo }}?')">Eliminar</button>
-     </form>
-
-     {% endfor %}
-
-     
-
-</body>
 {% endblock %}
-</html>

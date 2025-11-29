@@ -1,43 +1,137 @@
 {% load static %}
 
-<html>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-<body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultorio Médico</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     
+    <style>
+        .alert-dismissible {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
 
-<nav class="navbar navbar-expand-lg bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand text-white" href="/">Consultorio medico</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active text-white" aria-current="page" href="/esp">Especialidades</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/turno">Turnos</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/aboutus">Acerda de nosotros !</a>
-        </li>
+<body class="bg-light">
 
-      </ul>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg" style="background-color: #000;">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white fw-bold" href="/">Consultorio Médico</a>
+
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == '/esp/' %}fw-bold{% endif %}"
+                       href="/esp">Especialidades</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == '/turno/' %}fw-bold{% endif %}"
+                       href="/turno">Turnos</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/aboutus">Acerca de nosotros</a>
+                </li>
+            </ul>
+            
+            <!-- Botones de autenticación -->
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <span class="nav-link text-white">
+                            👤 {{ user.username }}
+                            {% if user.is_superuser or user.is_staff %}
+                                <span style="background-color: #ef4444; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">ADMIN</span>
+                            {% endif %}
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'logout' %}">Cerrar Sesión</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'login' %}">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'registro' %}">Registrarse</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 
-</body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-
-{% block content %}
-
-<div>
-    <img src="https://www.consultoriosmedicosle.com.ar/wp-content/uploads/2023/06/cmle-4.png" alt="" width="100%">
+<!-- MENSAJES DE SISTEMA -->
+<div class="container mt-3">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong>
+                {% if message.tags == 'error' %}
+                    ⚠️ Error:
+                {% elif message.tags == 'success' %}
+                    ✅ Éxito:
+                {% elif message.tags == 'warning' %}
+                    ⚡ Advertencia:
+                {% elif message.tags == 'info' %}
+                    ℹ️ Información:
+                {% endif %}
+            </strong>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
 </div>
-{% endblock %}
 
+<!-- CONTENIDO -->
+<div class="container my-4">
+    {% block content %}
+    <div class="text-center">
+        <img src="{% static 'consultorio.png' %}"
+             alt="Consultorio médico" class="img-fluid">
+    </div>
+    {% endblock %}
+</div>
 
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Auto-cerrar mensajes después de 5 segundos -->
+<script>
+    setTimeout(function() {
+        let alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            let bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 5000);
+</script>
+
+</body>
 </html>
-

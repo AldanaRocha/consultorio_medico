@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Seleccionar Tipo de Pago</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <h5>Detalle del Turno</h5>
+                        <p><strong>Paciente:</strong> {{ turno.paciente }}</p>
+                        <p><strong>DNI:</strong> {{ turno.dni }}</p>
+                        <p><strong>Especialidad:</strong> {{ turno.especialidad }}</p>
+                        <p><strong>Fecha:</strong> {{ turno.fecha }}</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="row mt-4">
+                            <!-- Opción Pago Completo -->
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">Pago Completo</h4>
+                                        <p class="display-4 text-success">${{ monto_completo }}</p>
+                                        <p class="text-muted">Pago total del turno</p>
+                                        <button type="submit" name="tipo_pago" value="completo" 
+                                                class="btn btn-success btn-lg w-100">
+                                            <i class="fas fa-check-circle"></i> Pagar Completo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Opción Seña -->
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">Seña</h4>
+                                        <p class="display-4 text-primary">${{ monto_senia }}</p>
+                                        <p class="text-muted">Reserva tu turno con una seña</p>
+                                        <button type="submit" name="tipo_pago" value="senia" 
+                                                class="btn btn-primary btn-lg w-100">
+                                            <i class="fas fa-hand-holding-usd"></i> Pagar Seña
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="mt-4 text-center">
+                        <a href="{% url 'lista_turnos' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Volver a Turnos
+                        </a>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="alert alert-light">
+                            <h6><i class="fas fa-shield-alt"></i> Pago Seguro</h6>
+                            <p class="mb-0 small">Serás redirigido a Mercado Pago para completar tu pago de forma segura.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

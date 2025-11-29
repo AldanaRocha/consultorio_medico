@@ -1,21 +1,18 @@
-
-
+import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e(83g$iwt!_$@nsj_v_&1h8cdw$+@gbf18+nenqumre*8jh80u'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG = config('DEBUG', default=False, cast=bool)
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -32,12 +29,18 @@ BASIC_APPS = [
 PROPIAS_APPS = [
     'Especialidad',
     'Turnos',
+    'usuarios',
 ]
 
 TERCEROS_APPS =[]
 
 INSTALLED_APPS = BASIC_APPS + PROPIAS_APPS + TERCEROS_APPS
 
+MERCADOPAGO_ACCESS_TOKEN = config('MERCADOPAGO_ACCESS_TOKEN')
+MERCADOPAGO_PUBLIC_KEY = config('MERCADOPAGO_PUBLIC_KEY')
+
+MONTO_TURNO_COMPLETO = config('MONTO_TURNO_COMPLETO', default=10000, cast=int)
+MONTO_SENIA = config('MONTO_SENIA', default=1000, cast=int)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -115,12 +118,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR /'static']
+#STATICFILES_DIRS = [BASE_DIR /'static']
 MEDIA_URL ='/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+STATICFILES_DIRS = [ BASE_DIR / "static" ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# Redirección cuando no tiene permisos (403)
+HANDLER_403 = 'django.views.defaults.permission_denied'
+
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'

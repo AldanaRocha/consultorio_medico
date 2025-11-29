@@ -1,25 +1,120 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear turno</title>
-</head>
-<body>
-    <h3> Nuevo turno:</h3>
-  <DIV>
-      <form method="POST">
+<style>
+    .turno-form-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        background: white;
+        border-radius: 12px;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        border: 1px solid #e5e7eb;
+    }
+
+    .turno-form-header {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        color: white;
+        padding: 1.8rem;
+        text-align: center;
+    }
+
+    .turno-form-header h3 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .turno-form-body {
+        padding: 2rem;
+    }
+
+    .turno-form-body label {
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .turno-form-body input,
+    .turno-form-body select {
+        width: 100%;
+        padding: .65rem;
+        margin-top: .2rem;
+        margin-bottom: 1rem;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        transition: border-color 0.3s ease;
+    }
+
+    .turno-form-body input:focus,
+    .turno-form-body select:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    }
+
+    .turno-form-actions {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.5rem 2rem 2rem;
+        gap: 1rem;
+    }
+
+    .btn-guardar {
+        flex: 1;
+        background-color: #10b981;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        transition: all .3s ease;
+        cursor: pointer;
+    }
+
+    .btn-guardar:hover {
+        background-color: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-salir {
+        flex: 1;
+        background-color: #6b7280;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 8px;
+        color: white;
+        text-align: center;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .3s ease;
+    }
+
+    .btn-salir:hover {
+        background-color: #4b5563;
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="turno-form-container">
+
+    <div class="turno-form-header">
+        <h3>Nuevo Turno</h3>
+    </div>
+
+    <div class="turno-form-body">
+        <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
+    </div>
 
-            <input class="btn btn-primary" value= "Guardar" type="submit" href="/">
-            <a href="/turno/" class="btn btn-primary"> Salir</a>
-      </form>
-  </DIV>
-</body>
-</html>
+    <div class="turno-form-actions">
+        <button type="submit" class="btn-guardar">Guardar</button>
+        <a href="/turno/" class="btn-salir">Salir</a>
+    </div>
+
+        </form>
+</div>
 
 {% endblock %}

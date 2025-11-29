@@ -1,22 +1,132 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acerca de nosotros</title>
-</head>
-<body>
-    <H4>Acerca de nosotros</H4>
-    <p>Esta es una página de consultorio médico para sacar turnos en diferentes especialidades!</p>
-    <div>
-    <img src="https://www.kreiskrankenhaus-wolgast.de/fileadmin/_processed_/9/e/csm_teaser_abteilungen_d92ecf00a5.jpg" alt="" width="600">
+
+<style>
+    .about-header {
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        color: white;
+        padding: 2.5rem;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .about-header h2 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .about-text {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #374151;
+        margin-bottom: 2rem;
+    }
+
+    .team-section {
+        margin-top: 2.5rem;
+    }
+
+    .team-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.25s ease;
+    }
+
+    .team-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .team-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+    }
+
+    .btn-volver {
+        background-color: #1e3a8a;
+        color: white;
+        padding: 0.7rem 1.5rem;
+        font-weight: 500;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: 0.3s ease;
+    }
+
+    .btn-volver:hover {
+        background-color: #1e40af;
+        color: white;
+    }
+</style>
+
+<!-- Header -->
+<div class="about-header">
+    <h2>Acerca de Nosotros</h2>
+    <p class="mb-0">Conocé más sobre nuestro consultorio y nuestro compromiso con la salud.</p>
 </div>
-    <div><a href="/" class="btn btn-primary">Salir</a></div>
-</body>
-</html>
+
+<!-- Info principal -->
+<div class="about-text">
+    <p>
+        Somos un consultorio médico comprometido con el bienestar integral de nuestros pacientes. 
+        Contamos con un equipo de profesionales altamente capacitados, brindando atención personalizada 
+        y humana en cada especialidad. Nuestro objetivo es ofrecer un servicio confiable, accesible y de 
+        calidad, acompañando a cada persona en su proceso de salud.
+    </p>
+    <p>
+        Trabajamos día a día para mejorar la experiencia del paciente mediante tecnología moderna, 
+        turnos fáciles de gestionar y un ambiente cómodo y seguro.
+    </p>
+</div>
+
+<!-- Equipo (opcional, se ve hermoso) -->
+<div class="team-section">
+    <h3 class="text-center mb-4">Nuestro Equipo</h3>
+
+    <div class="row g-4 justify-content-center">
+
+        <div class="col-md-4 col-sm-6">
+            <div class="team-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/387/387561.png" class="team-img">
+                <h5>Dr. Juan Pérez</h5>
+                <p class="text-muted">Clínica Médica</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="team-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" class="team-img">
+                <h5>Dra. Ana Gómez</h5>
+                <p class="text-muted">Pediatría</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="team-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/921/921071.png" class="team-img">
+                <h5>Dr. Carlos Ramírez</h5>
+                <p class="text-muted">Cardiología</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Botón volver -->
+<div class="text-center mt-5">
+    <a href="/" class="btn-volver">← Volver al Inicio</a>
+</div>
 
 {% endblock %}
