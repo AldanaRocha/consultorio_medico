@@ -1,6 +1,6 @@
-# RochaAldanaRepo
+# CONSULTORIO MEDICO
 
-    CONSULTORIO MEDIDO
+    ESTA PLATAFORMA FUNCIONA PARA GESTIONAR EL SISTEMA DE TURNOS Y ESPECIALIDADES DE UN CONSULTORIO MÉDICO DE MANERA FACIL Y SENCILLA. ADEMAS CUENTA CON MEDIO DE PAGO DE MERCADO PAGO.
 
 # FUNCIONALIDADES BÁSIAS:
 
@@ -21,6 +21,7 @@ python manage.py runserver
 
 ```
 ## PANTALLA PRINCIPAL
-
-<img width="1365" height="337" alt="image" src="https://www.consultoriosmedicosle.com.ar/wp-content/uploads/2023/06/cmle-4.png" />
+<p align="center">
+  <img src="static/consultorio.png" alt="Portada" width="700"/>
+</p>
 
