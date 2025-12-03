@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .success-container {
+        max-width: 600px;
+        margin: 3rem auto;
+        text-align: center;
+    }
+
+    .success-card {
+        background: white;
+        border-radius: 12px;
+        padding: 3rem 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .success-icon {
+        font-size: 5rem;
+        color: #10b981;
+        margin-bottom: 1rem;
+        animation: checkmark 0.5s ease-in-out;
+    }
+
+    @keyframes checkmark {
+        0% {
+            transform: scale(0);
+        }
+        50% {
+            transform: scale(1.2);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .success-title {
+        color: #065f46;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .success-message {
+        color: #6b7280;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .info-box {
+        background: #f0fdf4;
+        border: 2px solid #10b981;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        text-align: left;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #d1fae5;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #065f46;
+    }
+
+    .info-value {
+        color: #374151;
+    }
+
+    .btn-volver {
+        background-color: #3b82f6;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-block;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+    }
+
+    .btn-volver:hover {
+        background-color: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        color: white;
+    }
+</style>
+
+<div class="success-container">
+    <div class="success-card">
+        <div class="success-icon">✓</div>
+        
+        <h1 class="success-title">¡Pago Exitoso!</h1>
+        
+        <p class="success-message">
+            Tu pago ha sido procesado correctamente. 
+            {% if turno.pago_total %}
+            El turno está completamente pagado.
+            {% else %}
+            Has realizado el pago de la seña.
+            {% endif %}
+        </p>
+
+        <div class="info-box">
+            <div class="info-row">
+                <span class="info-label">👤 Paciente:</span>
+                <span class="info-value">{{ turno.paciente }}</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">📅 Fecha del turno:</span>
+                <span class="info-value">{{ turno.fecha|date:"d/m/Y" }}</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">🩺 Especialidad:</span>
+                <span class="info-value">{{ turno.especialidad.tipo }}</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">💳 Estado de pago:</span>
+                <span class="info-value">
+                    {% if turno.pago_total %}
+                        ✓ Pagado
+                    {% elif turno.pago_senia %}
+                        ⚡ Señado
+                    {% endif %}
+                </span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">💵 Monto:</span>
+                <span class="info-value">${{ turno.monto_pagado }}</span>
+            </div>
+            
+            {% if payment_id %}
+            <div class="info-row">
+                <span class="info-label">🔢 ID de pago:</span>
+                <span class="info-value">{{ payment_id }}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <p style="color: #6b7280; font-size: 0.9rem; margin-top: 1.5rem;">
+            Recibirás un comprobante en tu email registrado.
+        </p>
+
+        <a href="{% url 'lista_turnos' %}" class="btn-volver">
+            Ver mis turnos
+        </a>
+    </div>
+</div>
+
+{% endblock %}

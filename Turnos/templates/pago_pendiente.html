@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .pending-container {
+        max-width: 600px;
+        margin: 3rem auto;
+        text-align: center;
+    }
+
+    .pending-card {
+        background: white;
+        border-radius: 12px;
+        padding: 3rem 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .pending-icon {
+        font-size: 5rem;
+        color: #f59e0b;
+        margin-bottom: 1rem;
+    }
+
+    .pending-title {
+        color: #92400e;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .pending-message {
+        color: #6b7280;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .info-box {
+        background: #fffbeb;
+        border: 2px solid #f59e0b;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        text-align: left;
+    }
+
+    .btn-volver {
+        background-color: #3b82f6;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-block;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+    }
+
+    .btn-volver:hover {
+        background-color: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        color: white;
+    }
+</style>
+
+<div class="pending-container">
+    <div class="pending-card">
+        <div class="pending-icon">⏳</div>
+        
+        <h1 class="pending-title">Pago Pendiente</h1>
+        
+        <p class="pending-message">
+            Tu pago está siendo procesado. Esto puede demorar unos minutos.
+            Te notificaremos cuando se confirme el pago.
+        </p>
+
+        <div class="info-box">
+            <p style="margin: 0; color: #92400e;">
+                <strong>📌 Información importante:</strong><br>
+                • Los pagos pueden tardar hasta 48 horas en acreditarse<br>
+                • Recibirás un email cuando se confirme<br>
+                • Puedes consultar el estado en "Mis Turnos"
+            </p>
+        </div>
+
+        <p style="color: #374151; margin-bottom: 2rem;">
+            <strong>Turno:</strong> {{ turno.paciente }}<br>
+            <strong>Fecha:</strong> {{ turno.fecha|date:"d/m/Y" }}<br>
+            <strong>Especialidad:</strong> {{ turno.especialidad.tipo }}
+        </p>
+
+        <a href="{% url 'lista_turnos' %}" class="btn-volver">
+            Ver mis turnos
+        </a>
+    </div>
+</div>
+
+{% endblock %}
