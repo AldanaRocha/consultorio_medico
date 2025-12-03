@@ -128,7 +128,6 @@ class SeleccionarPagoView(LoginRequiredMixin, View):
             messages.error(request, f'Error al procesar el pago: {str(e)}')
             return redirect('seleccionar_pago', turno_id=turno_id)
 
-
 class PagoExitosoView(LoginRequiredMixin, View):
     """Vista cuando el pago fue exitoso"""
     
@@ -150,16 +149,64 @@ class PagoExitosoView(LoginRequiredMixin, View):
             # Actualizar flags según tipo de pago
             if turno.tipo_pago == 'completo':
                 turno.pago_total = True
-            else:
+                turno.pago_senia = False
+            elif turno.tipo_pago == 'senia':
                 turno.pago_senia = True
+                turno.pago_total = False
+            else:
+                # Si por alguna razón tipo_pago está vacío, intentar deducirlo del monto
+                from django.conf import settings
+                monto_completo = getattr(settings, 'MONTO_TURNO_COMPLETO', 5000)
+                monto_senia = getattr(settings, 'MONTO_SENIA', 1500)
+                
+                if turno.monto_pagado:
+                    if float(turno.monto_pagado) >= monto_completo:
+                        turno.pago_total = True
+                        turno.tipo_pago = 'completo'
+                    else:
+                        turno.pago_senia = True
+                        turno.tipo_pago = 'senia'
             
             turno.save()
+            messages.success(request, '¡Pago procesado exitosamente!')
         
         context = {
             'turno': turno,
             'payment_id': payment_id
         }
         return render(request, 'pago_exitoso.html', context)
+    
+# class PagoExitosoView(LoginRequiredMixin, View):
+#     """Vista cuando el pago fue exitoso"""
+    
+#     def get(self, request, turno_id):
+#         turno = get_object_or_404(Turno, id=turno_id)
+        
+#         # Verificar que el turno pertenezca al usuario (excepto admin)
+#         if not (request.user.is_superuser or request.user.is_staff):
+#             if turno.usuario != request.user and turno.email != request.user.email:
+#                 messages.error(request, 'No tienes permiso para ver este turno.')
+#                 return redirect('lista_turnos')
+        
+#         payment_id = request.GET.get('payment_id')
+        
+#         if payment_id:
+#             turno.payment_id = payment_id
+#             turno.estado_pago = 'aprobado'
+            
+#             # Actualizar flags según tipo de pago
+#             if turno.tipo_pago == 'completo':
+#                 turno.pago_total = True
+#             else:
+#                 turno.pago_senia = True
+            
+#             turno.save()
+        
+#         context = {
+#             'turno': turno,
+#             'payment_id': payment_id
+#         }
+#         return render(request, 'pago_exitoso.html', context)
 
 
 class PagoFallidoView(LoginRequiredMixin, View):

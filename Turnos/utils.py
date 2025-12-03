@@ -31,6 +31,8 @@ def crear_preferencia_pago(turno, tipo_pago, request):
         pending_url = request.build_absolute_uri(reverse('pago_pendiente', args=[turno_id]))
         
         print(f"Success URL: {success_url}")
+        print(f"Failure URL: {failure_url}")
+        print(f"Pending URL: {pending_url}")
         
         # Crear la preferencia
         preference_data = {
@@ -46,7 +48,6 @@ def crear_preferencia_pago(turno, tipo_pago, request):
             "payer": {
                 "name": turno.paciente,
                 "email": turno.email if turno.email else "test@test.com",
-
                 "identification": {
                     "type": "DNI",
                     "number": str(turno.dni)
@@ -57,8 +58,7 @@ def crear_preferencia_pago(turno, tipo_pago, request):
                 "failure": failure_url,
                 "pending": pending_url
             },
-            # Quitamos auto_return para desarrollo en localhost
-            # "auto_return": "all",
+            # "auto_return": "all",  # Temporalmente deshabilitado por error de MP
             "external_reference": str(turno_id),
             "statement_descriptor": "CONSULTORIO MEDICO",
             "metadata": {
@@ -99,7 +99,6 @@ def crear_preferencia_pago(turno, tipo_pago, request):
 
 
 def verificar_pago(payment_id):
-
     sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
     payment_info = sdk.payment().get(payment_id)
     

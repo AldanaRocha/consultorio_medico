@@ -288,9 +288,9 @@
                 </div>
                 
                 {% if t.pago_total %}
-                    <span class="badge-pago badge-completo">✓ Pago Completo</span>
+                    <span class="badge-pago badge-completo">✓ Pagado</span>
                 {% elif t.pago_senia %}
-                    <span class="badge-pago badge-senia">⚡ Seña Pagada</span>
+                    <span class="badge-pago badge-senia">⚡ Señado</span>
                 {% else %}
                     {% if t.estado_pago == 'pendiente' %}
                         <span class="badge-pago badge-pendiente">⏳ Pago Pendiente</span>

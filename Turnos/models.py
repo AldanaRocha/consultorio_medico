@@ -31,6 +31,7 @@ class Turno(models.Model):
     # Información de pago
     pago_total = models.BooleanField(default=False, verbose_name="Pago Total")
     pago_senia = models.BooleanField(default=False, verbose_name="Pago Seña")
+    tipo_pago = models.CharField(max_length=20, choices=TIPO_PAGO_CHOICES, blank=True, null=True, verbose_name="Tipo de Pago")  # ← AGREGAR ESTA LÍNEA
     monto_pagado = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Monto Pagado")
     estado_pago = models.CharField(max_length=20, choices=ESTADO_PAGO_CHOICES, default='pendiente', verbose_name="Estado del Pago")
     
